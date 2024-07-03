@@ -13,6 +13,8 @@ const client = new Client({
     ],
 });
 
+const queue = [];
+
 client.commands = new Collection();
 const commandFiles = fs.readdirSync(path.join(__dirname, 'commands')).filter(file => file.endsWith('.js'));
 for (const file of commandFiles) {
@@ -30,12 +32,10 @@ client.on('messageCreate', async (message) =>{
     args = message.content.slice(2).trim().split(' ');
     commandName = args.shift().toLowerCase();
 
-    if (!args[0].startsWith('https://www.youtube.com/')) return; //args[0]=URL;
-
     command = client.commands.get(commandName);
     if (!command) return;
     try {
-        await command.execute(message);
+        await command.execute(message, queue);
     } catch (error) {
         console.error(error);
         message.reply('There was an error trying to execute that command!');

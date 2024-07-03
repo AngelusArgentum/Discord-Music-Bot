@@ -17,12 +17,7 @@ function getConnection() {
     return connection;
 }
 
-function setConnection(c){
-    connection=c;
-}
-
 module.exports = {
     joinVoiceChannelSingleton,
     getConnection,
-    setConnection
 };
